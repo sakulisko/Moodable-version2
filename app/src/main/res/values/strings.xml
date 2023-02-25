@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Moodable</string>
+    <string name="moodable" />
+    <string name="enter" />
+    <string name="radioButton1">RadioButton1</string>
+    <string name="radioButton2">RadioButton2</string>
+    <string name="radioButton3">RadioButton3</string>
+    <string name="historyButton">History</string>
+</resources>

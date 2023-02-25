@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FDF5E6">
+
+    <Button
+        android:id="@+id/backToMonthButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="back"
+        android:textColor="#FDFEFE "
+        app:backgroundTint="#D3DF97"
+        app:layout_constraintEnd_toStartOf="@+id/historyTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/historyTextView"
+        android:layout_width="133dp"
+        android:layout_height="35dp"
+        android:text="History"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@+id/backToMonthButton"
+        app:layout_constraintEnd_toStartOf="@+id/clearButton"
+        app:layout_constraintStart_toEndOf="@+id/backToMonthButton" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:text="clear history"
+        android:textColor="#FDFEFE "
+        app:backgroundTint="#D3DF97"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/historyTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrowView"
+        android:layout_width="409dp"
+        android:layout_height="536dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.869">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/averageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average Per Month"
+        app:layout_constraintBottom_toTopOf="@+id/scrowView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/historyTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
