@@ -61,6 +61,22 @@ public class EmoHistory extends AppCompatActivity {
         backToMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // FIX how the navigation is handled, it's enough to do it only here, to see you understand concepts how navigation works
+
+                // According to the android UI/UX guidelines the navigation back is handle by the back button/gesture
+                // If the back arrow is used, it should be in the toolbar and serve as go one step higher in application
+                // hierarchy.
+
+                // It's also broken in this case, try this scenario
+                // 1. Open the history
+                // 2. press this back button
+                // 3. open the history
+                // 4. press this back button
+                // 5. open the history
+                // 6. press the back button
+                // 7. open the history
+                // 8. use the the device back button/gesture. The MontPage is open, with the visible progress
+                // 9. use the device back button/gesture. The history is opened again (pop up from the backstack). Expected behaviour is MainActivity should be opened now
                 Intent intent = new Intent(EmoHistory.this, MonthPage.class);
                 startActivity(intent);
             }
@@ -71,6 +87,7 @@ public class EmoHistory extends AppCompatActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // This shouldn't be handled by the navigation anywhere, just delete the data and reload the content.
                 clear(view);
                 Intent intent = new Intent(EmoHistory.this, EmoHistory.class);
                 startActivity(intent);
@@ -96,6 +113,8 @@ public class EmoHistory extends AppCompatActivity {
         });
 
         //behem iteraci pridame emoji do stranky historie
+        // FIX - it's enough to use the recycler just here, to see you understand how it works
+        // This is list, for this we have recycler, it handles reusing of view, when user scroll with the list.
         scrollView = findViewById(R.id.scrowView);
         linearLayout = findViewById(R.id.linearLayout);
         for (int i=0; i< emos.size(); i++) {
@@ -128,6 +147,8 @@ public class EmoHistory extends AppCompatActivity {
     public static float convertPixelsToDp(float px, Context context){
         return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
+
+    // Same issue, which is already mentioned in MonthPage, file IO operation should be outside of Activity lifecycle and should happen on background thread.
     public List<Emo> read(){
         Log.e("File","read.start");
         String filename = "emoData";

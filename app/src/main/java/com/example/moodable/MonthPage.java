@@ -43,6 +43,8 @@ public class MonthPage extends AppCompatActivity {
     ImageButton emoji3;
     ImageButton emoji4;
     ProgressBar progressBar;
+
+    // This method is very long, which makes it very hard to read
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +53,26 @@ public class MonthPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // zpracovavani datum: 54-74
-        Date currentDate = new Date();
+        // This is exactly the case, why everything in kotlin is final by default, in Java you have
+        // to think about it
 
         SimpleDateFormat dateFormat = null;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             dateFormat = new SimpleDateFormat("YYYY-MM-dd");
         }
+        // FIX - the app crashes on lower APIs.
+        // What about lower APIs? The minSdk is set to 19, in these cases the application crash
+
+        // It works, but it's not correct, you should use dedicated logging functionality. Even in
+        // clean java you should use this only for user-facing messages. For log, always use some
+        // logging solution, to enable proper log handling (logrotate, filtering, auditing, ...)
         System.out.println(dateFormat.format(currentDate));
 
         String[] dateStr = dateFormat.format(currentDate).split("-");
 
         int[] date = {Integer.parseInt(dateStr[2]), Integer.parseInt(dateStr[1]), Integer.parseInt(dateStr[0])};
+        // If you don't want to use calendar for this purpose, you should define class, which encapsulates these values instead of simple array.
         int[] currentDateArr = date;
         long[] currentTimeStamp = {Long.MAX_VALUE};
         long[] chosedTimeStamp = {Long.MAX_VALUE};
@@ -84,6 +94,8 @@ public class MonthPage extends AppCompatActivity {
                 try {
                     chosedTimeStamp[0] = convertToTimeStamp(year, month+1, day);
                     if (currentTimeStamp[0] < chosedTimeStamp[0]) {
+                        // FIX - fix all the occurrences of hardcoded text, resources are affected as well.
+                        // Hardcoded texts, hard localisation
                         Toast.makeText(getApplicationContext(), "You cannot chose future date", Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -103,10 +115,12 @@ public class MonthPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (currentTimeStamp[0] > chosedTimeStamp[0]) {
+                    // Hardcoded texts, hard localisation
                     Toast.makeText(getApplicationContext(), "You were happy on" + date[0] + "-" + date[1] + "-" + date[2], Toast.LENGTH_LONG).show();
 
                 }
                 else if (currentTimeStamp[0] == chosedTimeStamp[0]){
+                    // Hardcoded texts, hard localisation
                     Toast.makeText(getApplicationContext(), "You are happy today!", Toast.LENGTH_LONG).show();
 
                 }
@@ -125,10 +139,12 @@ public class MonthPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (currentTimeStamp[0] > chosedTimeStamp[0]) {
+                    // Hardcoded texts, hard localisation
                     Toast.makeText(getApplicationContext(), "You were in love on" + date[0] + "-" + date[1] + "-" + date[2], Toast.LENGTH_LONG).show();
 
                 }
                 else if (currentTimeStamp[0] == chosedTimeStamp[0]){
+                    // Hardcoded texts, hard localisation
                     Toast.makeText(getApplicationContext(), "You are in love today!", Toast.LENGTH_LONG).show();
 
                 }
@@ -146,10 +162,12 @@ public class MonthPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (currentTimeStamp[0] > chosedTimeStamp[0]) {
+                    // Hardcoded texts, hard localisation
                     Toast.makeText(getApplicationContext(), "You were angry on" + date[0] + "-" + date[1] + "-" + date[2], Toast.LENGTH_LONG).show();
 
                 }
                 else if (currentTimeStamp[0] == chosedTimeStamp[0]){
+                    // Hardcoded texts, hard localisation
                     Toast.makeText(getApplicationContext(), "You are angry today!", Toast.LENGTH_LONG).show();
 
                 }
@@ -167,10 +185,12 @@ public class MonthPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (currentTimeStamp[0] > chosedTimeStamp[0]) {
+                    // Hardcoded texts, hard localisation
                     Toast.makeText(getApplicationContext(), "You were sad on" + date[0] + "-" + date[1] + "-" + date[2], Toast.LENGTH_LONG).show();
 
                 }
                 else if (currentTimeStamp[0] == chosedTimeStamp[0]){
+                    // Hardcoded texts, hard localisation
                     Toast.makeText(getApplicationContext(), "You are sad today!", Toast.LENGTH_LONG).show();
 
                 }
@@ -196,7 +216,11 @@ public class MonthPage extends AppCompatActivity {
         });
 
     }
+
+
     private long convertToTimeStamp(int year, int month, int day) throws ParseException {
+        // Do not convert time by using date format, there is better API for it, i.e. java.util.Calendar.
+        // If you still want to use this approach, you should consider also with timezones.
         String time = year + "-" + month + "-" + day;
         //String time="2018-1-9";
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
@@ -206,8 +230,12 @@ public class MonthPage extends AppCompatActivity {
         Long timestamp=date.getTime();
         return timestamp;
     }
+
     //zapsani do souboru
     public void write(String fileContents){
+        // FIX - If you keep using file, the write/read should be handled by dedicated object, it's much easier
+        // to handle synchronisation. But for similar purpose I highly recommend using database (room https://developer.android.com/training/data-storage/room)
+        // Write read from file should always happen on background thread and outside of the activity lifecycle.
         //zalozeni souboru
         String filename = "emoData";
         //funkce skonci, kdyz kontext, ktery chceme zapsat, je prazdny

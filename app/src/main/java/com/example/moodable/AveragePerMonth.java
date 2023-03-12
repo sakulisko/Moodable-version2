@@ -40,11 +40,15 @@ public class AveragePerMonth extends AppCompatActivity {
 
         //nacteni a ulozeni dat emoci
         emos = read();
-        Collections.sort(emos, new AveragePerMonth().new emoSorter());
+
+        // Sorting is potentially CPU heavy operation, should happen of main thread
+        Collections.sort(emos, new emoSorter());
 
         List<int[]> averageSumOfEmoPerMonth = getAverageSumOfEmoPerMonth(emos);
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
+
+            // Same issue with navigation as already described in EmoHistory
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AveragePerMonth.this, EmoHistory.class);
@@ -55,6 +59,7 @@ public class AveragePerMonth extends AppCompatActivity {
         linearLayout = findViewById(R.id.linearLayout);
 
         //zobrazeni prumernou emoci na strance
+        // Same case as EmoHistory, this should be RecyclerView
         for (int[] month_year_averageSum : averageSumOfEmoPerMonth) {
             TextView date = new TextView(this);
             //date.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -84,6 +89,9 @@ public class AveragePerMonth extends AppCompatActivity {
             linearLayout.addView(emoji);
         }
     }
+
+    // This is also already described elsewhere, file IO operations should happen outside Activity scope
+    // and off main thread.
     public List<Emo> read(){
         Log.e("File","read.start");
         String filename = "emoData";
@@ -181,6 +189,9 @@ public class AveragePerMonth extends AppCompatActivity {
         }
         return sumsPerMonth;
     }
+
+    // The comparator should be static or standalone class. Without the static modifier, it has access
+    // to the AveragePerMonth class, which is not needed.
     class emoSorter implements Comparator<Emo> {
         @Override
         public int compare(Emo emo1, Emo emo2) {
